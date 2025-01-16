@@ -17,6 +17,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,8 +33,13 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Integer> perfectSquareList = new ArrayList<>();
 
         EditText numberInput = findViewById(R.id.numberInput);
+        EditText numInputSquare = findViewById(R.id.numInputSquare);
+
         Button btnCheck = findViewById(R.id.btnCheck);
 
+        Button btnCheckPerfectSquare = findViewById(R.id.btnCheckPerfectSquare);
+
+        // BT4 - Check nguyên tố
         btnCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,8 +68,37 @@ public class MainActivity extends AppCompatActivity {
                         perfectSquareList.add(number);
                     }
                 }
+            }
+        });
 
-                // Find the TextView to display results
+        // Bt5 - Random n số ngẫu nhiên và check chính phương
+        btnCheckPerfectSquare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String input = numInputSquare.getText().toString().trim();
+
+                if (input.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Vui lòng nhập số phần tử!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                int n;
+                try {
+                    n = Integer.parseInt(input);
+                } catch (NumberFormatException e) {
+                    Toast.makeText(MainActivity.this, "Vui lòng nhập một số hợp lệ!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                ArrayList<Integer> randomNumbers = generateRandomNumbers(n);
+
+                perfectSquareList.clear();
+                for (int number : randomNumbers) {
+                    if (isPerfectSquare(number)) {
+                        perfectSquareList.add(number);
+                    }
+                }
+
                 TextView txtPerfectSquareList = findViewById(R.id.txtPerfectSquareList);
                 StringBuilder sb = new StringBuilder();
                 for (int number : perfectSquareList) {
@@ -71,8 +106,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (perfectSquareList.isEmpty()) {
                     txtPerfectSquareList.setText("Không có số chính phương.");
+                    Toast.makeText(MainActivity.this, "Không có số chính phương.", Toast.LENGTH_SHORT).show();
                 } else {
                     txtPerfectSquareList.setText("Số chính phương: " + sb.toString());
+                    Toast.makeText(MainActivity.this, "Số chính phương: " + sb.toString(), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -103,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
         return sqrt * sqrt == number;
     }
 
-
     private boolean isPrime(int num) {
         if (num <= 1) {
             return false;
@@ -115,4 +151,16 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
+
+    private ArrayList<Integer> generateRandomNumbers(int n) {
+        ArrayList<Integer> randomNumbers = new ArrayList<>();
+        Random random = new Random();
+
+        for (int i = 0; i < n; i++) {
+            randomNumbers.add(random.nextInt(100) + 1);
+        }
+
+        return randomNumbers;
+    }
+
 }
