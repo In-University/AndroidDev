@@ -44,4 +44,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <Button
+        android:id="@+id/btnCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="196dp"
+        android:text="Kiểm tra"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/numberInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="484dp"
+        android:ems="10"
+        android:hint="Nhập số tự nhiên, cách nhau bằng dấu ,"
+        android:inputType="text"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtPerfectSquareList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="136dp"
+        android:text="Số chính phương: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
