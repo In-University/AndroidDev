@@ -6,32 +6,39 @@
     android:layout_height="wrap_content"
     android:padding="16dp">
 
-    <!-- Tiêu đề cho Dialog -->
+    <!-- Tiêu đề -->
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="THÊM NOTES"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:textStyle="bold"
+        android:textColor="@color/black"
         android:layout_marginBottom="16dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Ô nhập nội dung (EditText) -->
+    <!-- Ô nhập nội dung -->
+
+    <!-- Layout chứa các nút -->
     <EditText
         android:id="@+id/editTextName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:hint="Nhập tên Notes"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
-    <!-- Khu vực chứa các nút bấm -->
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
@@ -42,9 +49,12 @@
 
         <Button
             android:id="@+id/buttonAdd"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="THÊM NOTES" />
+            android:layout_weight="1"
+            android:backgroundTint="@color/design_default_color_primary"
+            android:text="THÊM NOTES"
+            android:textColor="@color/white"/>
 
         <Space
             android:layout_width="16dp"
@@ -52,9 +62,11 @@
 
         <Button
             android:id="@+id/buttonCancel"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="HỦY" />
+            android:layout_weight="1"
+            android:text="HỦY"
+            android:textColor="@color/white"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

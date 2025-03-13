@@ -2,7 +2,9 @@ package com.example.sql_lite;
 
 import static android.app.ProgressDialog.show;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -88,14 +90,13 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
     private void databaseSQLite(){
-        //Lấy dữ liệu
+        arrayList.removeAll(arrayList);
         Cursor cursor = databaseHandler.GetData("SELECT * FROM Notes");
         while (cursor.moveToNext()) {
             //them dữ liệu vào arraylist
             String name = cursor.getString(1);
             int id = cursor.getInt(0);
             // Toast.makeText(this, "name::" + name + "id:::" + id, Toast.LENGTH_SHORT).show();
-
             arrayList.add(new NotesModel (id, name));
             //Toast.makeText(this, name, Toast.LENGTH_SHORT).show();
         }
@@ -183,5 +184,29 @@ public class MainActivity extends AppCompatActivity {
 
         // Hiển thị Dialog ngay sau khi đã thiết lập xong sự kiện
         dialog.show();
+    }
+
+    //hàm dialog xóa
+    public void DialogDelete(String name, final int id) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Bạn có muốn xóa Notes " + name + " này không?");
+
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                databaseHandler.QueryData("DELETE FROM Notes WHERE Id=" + id);
+                Toast.makeText(MainActivity.this, "Đã xóa Notes " + name + " thành công", Toast.LENGTH_SHORT).show();
+                databaseSQLite(); // Gọi hàm load lại dữ liệu
+            }
+        });
+
+        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.show();
     }
 }

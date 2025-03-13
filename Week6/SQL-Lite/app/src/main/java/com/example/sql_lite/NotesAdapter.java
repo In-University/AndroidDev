@@ -71,6 +71,14 @@ public class NotesAdapter extends BaseAdapter {
             }
         });
 
+        //bắt sự kiện xóa notes
+        viewHolder.imageViewDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) context).DialogDelete(note.getNameNote(), note.getIdNote());
+            }
+        });
+
         return convertView;
     }
 }

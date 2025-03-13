@@ -44,6 +44,8 @@
             android:id="@+id/buttonUpdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/design_default_color_primary"
+
             android:text="UPDATE NOTES" />
 
         <Space
