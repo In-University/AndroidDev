@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- ViewPager2 -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewpage2"
+        android:layout_width="match_parent"
+        android:layout_height="220dp" />
+
+    <!-- CircleIndicator3 -->
+    <me.relex.circleindicator.CircleIndicator3
+        android:id="@+id/circle_indicator3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:ci_drawable="@drawable/ic_launcher_background"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/viewpage2" />
+</androidx.constraintlayout.widget.ConstraintLayout>
