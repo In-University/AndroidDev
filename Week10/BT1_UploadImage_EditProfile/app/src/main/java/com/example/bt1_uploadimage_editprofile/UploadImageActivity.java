@@ -86,18 +86,15 @@ public class UploadImageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_image);
-        // Gọi hàm ánh xạ
         AnhXa();
         // Khởi tạo ProgressDialog
         mProgressDialog = new ProgressDialog(UploadImageActivity.this);
         mProgressDialog.setMessage("Please wait upload....");
 
-        // Bắt sự kiện nút chọn ảnh
         btnChoose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkPermission(); // Hàm kiểm tra quyền (cần được định nghĩa)
-                // Ví dụ: mở thư viện ảnh
+                checkPermission();
             }
         });
 
@@ -115,28 +112,23 @@ public class UploadImageActivity extends AppCompatActivity {
     public void UploadImagel() {
         mProgressDialog.show();
 
-        // Lấy username từ EditText
         String username = editTextUserName.getText().toString().trim();
         RequestBody requestUsername = RequestBody.create(MediaType.parse("multipart/form-data"), username);
 
-        // Lấy đường dẫn ảnh từ mUri (RealPathUtil là lớp tiện ích tự định nghĩa)
         String IMAGE_PATH = vn.iotstar.appfoods.Utils.RealPathUtil.getRealPath(this, mUri);
         Log.e("ffff", IMAGE_PATH);
 
         File file = new File(IMAGE_PATH);
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
-        // Tạo MultipartBody.Part để upload file với tên file thật
         MultipartBody.Part partbodyavatar = MultipartBody.Part.createFormData(Const.MY_IMAGES, file.getName(), requestFile);
 
-        // Gọi Retrofit
         ServiceAPI.serviceApi.upload(requestUsername, partbodyavatar).enqueue(new Callback<List<ImageUpload>>() {
             @Override
             public void onResponse(Call<List<ImageUpload>> call, Response<List<ImageUpload>> response) {
                 mProgressDialog.dismiss();
                 List<ImageUpload> imageUpload = response.body();
                 if (imageUpload != null && imageUpload.size() > 0) {
-                    // Ví dụ: duyệt danh sách kết quả trả về
                     for (int i = 0; i < imageUpload.size(); i++) {
                         textViewUsername.setText(imageUpload.get(i).getUsername());
                         Glide.with(UploadImageActivity.this)

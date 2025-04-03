@@ -84,9 +84,6 @@ public class ProfileActivity extends AppCompatActivity {
                                             .skipMemoryCache(true)
                                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                                             .into(ivProfilePic);
-
-                                    // Optional: Save the newImageUrl somewhere persistent if needed
-                                    // e.g., update SharedPreferences or your user data source
                                 }
                             } else {
                                 Log.d("ProfileActivity", "Result OK, but no new image URL found in data.");
@@ -109,18 +106,15 @@ public class ProfileActivity extends AppCompatActivity {
                 // Navigate to the UploadImageActivity
                 Intent intent = new Intent(ProfileActivity.this, ProfileImageUpload.class);
 
-                // Pass the actual user ID (make sure tvUserId has the correct value loaded)
-                // Important: Send it as a String since ProfileImageUpload expects a String
                 String currentUserId = tvUserId.getText().toString();
                 if (currentUserId.isEmpty() || currentUserId.equals("UNKNOWN_USER")) {
                     Toast.makeText(ProfileActivity.this, "Cannot edit profile: User ID not loaded correctly.", Toast.LENGTH_SHORT).show();
-                    return; // Prevent starting if ID is bad
+                    return;
                 }
                 intent.putExtra(ProfileImageUpload.EXTRA_USER_ID, currentUserId);
 
                 // --- Step 3: Launch the activity using the launcher ---
                 profileUpdateResultLauncher.launch(intent);
-                // startActivity(intent); // Don't use this anymore
             }
         });
 
@@ -134,22 +128,19 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void loadUserProfile() {
-        // --- Placeholder / Example Data Loading ---
-        // Make sure this method loads the correct User ID into tvUserId
-        String userId = "3"; // Example ID - Load the real one here!
+        String userId = "12345";
         String username = "trung1";
         String fullName = "Nguyễn Hữu Trung";
         String email = "trung2@gmail.com";
         String gender = "Male";
-        String profileImageUrl = null; // Load the initial URL here
+        String profileImageUrl = null;
 
-        tvUserId.setText(userId); // Make sure this is set correctly
+        tvUserId.setText(userId);
         tvUsername.setText(username);
         tvFullName.setText(fullName);
         tvEmail.setText(email);
         tvGender.setText(gender);
 
-        // Load profile image using Glide
         if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
             Glide.with(this)
                     .load(profileImageUrl)
@@ -161,7 +152,6 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    // Handle Toolbar back button press
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

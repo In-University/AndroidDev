@@ -42,19 +42,17 @@ public class ProfileImageUpload extends AppCompatActivity {
 
     Toolbar toolbarUpload;
     Button btnChoose, btnUpload;
-    ImageView imageViewChoose; // The main preview ImageView (R.id.imgChoose)
-    // --- End Views ---
+    ImageView imageViewChoose;
 
-    private Uri mUri; // Uri of the selected image
+    private Uri mUri;
     private ProgressDialog mProgressDialog;
-    private String userId; // To store the user ID passed from ProfileActivity
+    private String userId;
 
     public static final int MY_REQUEST_CODE = 100;
     public static final String TAG = ProfileImageUpload.class.getName();
-    public static final String EXTRA_USER_ID = "USER_ID"; // Key for passing user ID
-    public static final String RESULT_EXTRA_IMAGE_URL = "NEW_AVATAR_URL"; // Key for returning result
+    public static final String EXTRA_USER_ID = "USER_ID";
+    public static final String RESULT_EXTRA_IMAGE_URL = "NEW_AVATAR_URL";
 
-    // Activity Result Launcher for picking image
     private final ActivityResultLauncher<Intent> mActivityResultLauncher =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
@@ -92,12 +90,11 @@ public class ProfileImageUpload extends AppCompatActivity {
                         }
                     });
 
-    // Initialize views
     private void AnhXa() {
         toolbarUpload = findViewById(R.id.toolbarUpload);
         btnChoose = findViewById(R.id.btnChoose);
         btnUpload = findViewById(R.id.btnUpload);
-        imageViewChoose = findViewById(R.id.imgChoose); // This is the preview ImageView
+        imageViewChoose = findViewById(R.id.imgChoose);
     }
 
     @Override
@@ -105,15 +102,11 @@ public class ProfileImageUpload extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_profile_image);
 
-        // Get User ID passed from ProfileActivity (Important for upload)
         userId = getIntent().getStringExtra(EXTRA_USER_ID);
         if (userId == null || userId.trim().isEmpty()) {
             Log.e(TAG, "User ID not passed via Intent. Upload might fail if ID is required.");
             Toast.makeText(this, "Error: User information missing.", Toast.LENGTH_LONG).show();
-            // Handle this case - maybe finish the activity?
-            // finish();
-            // For demonstration, let's proceed but log the issue.
-            userId = "UNKNOWN_USER"; // Assign a default or handle error more gracefully
+            userId = "UNKNOWN_USER";
         }
 
         // Call AnhXa to find views
@@ -122,24 +115,20 @@ public class ProfileImageUpload extends AppCompatActivity {
         // --- Toolbar Setup ---
         setSupportActionBar(toolbarUpload);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Show back arrow
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            // Title is likely set in XML, or you can set it here:
-            // getSupportActionBar().setTitle("Change Avatar");
         }
 
         // Initialize ProgressDialog
-        mProgressDialog = new ProgressDialog(this); // Use 'this' for context
+        mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("Please wait, uploading image...");
-        mProgressDialog.setCancelable(false); // Prevent dismissing by tapping outside
+        mProgressDialog.setCancelable(false);
 
-        // Set Click Listener for Choose Button
         btnChoose.setOnClickListener(v -> checkPermission());
 
-        // Set Click Listener for Upload Button
         btnUpload.setOnClickListener(v -> {
             if (mUri != null) {
-                uploadImageToServer(); // Changed method name for clarity
+                uploadImageToServer();
             } else {
                 Toast.makeText(ProfileImageUpload.this, "Please choose an image first.", Toast.LENGTH_SHORT).show();
             }
@@ -161,12 +150,8 @@ public class ProfileImageUpload extends AppCompatActivity {
         mProgressDialog.show();
 
         // --- Prepare data for Retrofit ---
-
-        // 1. User ID (or username if API requires that) as RequestBody
-        // Assuming your API needs the user ID as a form part named "userId"
         RequestBody requestUserId = RequestBody.create(MediaType.parse("multipart/form-data"), userId);
 
-        // 2. Get Real Path from Uri using your utility
         String imagePath;
         try {
             imagePath = vn.iotstar.appfoods.Utils.RealPathUtil.getRealPath(this, mUri);
@@ -181,7 +166,6 @@ public class ProfileImageUpload extends AppCompatActivity {
             return;
         }
 
-        // 3. Create File object
         File file = new File(imagePath);
         if (!file.exists() || !file.canRead()) {
             Log.e(TAG, "File does not exist or cannot be read: " + imagePath);
@@ -190,35 +174,26 @@ public class ProfileImageUpload extends AppCompatActivity {
             return;
         }
 
-        // 4. Create RequestBody for the file part
         RequestBody requestFile = RequestBody.create(MediaType.parse(getContentResolver().getType(mUri)), file); // Use MIME type from ContentResolver
-
-        // 5. Create MultipartBody.Part (ensure Const.MY_IMAGES is the correct part name expected by your backend API)
         MultipartBody.Part partbodyavatar = MultipartBody.Part.createFormData(Const.MY_IMAGES, file.getName(), requestFile);
 
-        // --- Make API Call using Retrofit ---
-        // ** IMPORTANT: Ensure ServiceAPI interface and Retrofit instance are correctly set up **
-        // Adjust the API call based on your ServiceAPI definition (e.g., parameters might differ)
         ServiceAPI.serviceApi.upload(requestUserId, partbodyavatar).enqueue(new Callback<List<ImageUpload>>() { // Assuming API returns a List
             @Override
             public void onResponse(@NonNull Call<List<ImageUpload>> call, @NonNull Response<List<ImageUpload>> response) {
                 mProgressDialog.dismiss();
                 if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                    // Assuming the first item in the list contains the relevant info
                     ImageUpload uploadResult = response.body().get(0);
-                    String newAvatarUrl = uploadResult.getAvatar(); // Get the new URL
+                    String newAvatarUrl = uploadResult.getAvatar();
 
                     Log.d(TAG, "Upload successful. New Avatar URL: " + newAvatarUrl);
                     Toast.makeText(ProfileImageUpload.this, "Avatar updated successfully!", Toast.LENGTH_LONG).show();
 
-                    // --- Return result to ProfileActivity ---
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra(RESULT_EXTRA_IMAGE_URL, newAvatarUrl);
                     setResult(Activity.RESULT_OK, resultIntent);
-                    finish(); // Close this activity
+                    finish();
 
                 } else {
-                    // Handle API error response
                     String errorMsg = "Upload failed.";
                     if (!response.isSuccessful()) {
                         errorMsg += " (Code: " + response.code() + ")";
@@ -246,12 +221,8 @@ public class ProfileImageUpload extends AppCompatActivity {
     }
 
     // --- Permission Handling ---
-
-    // Define permissions based on Android version
     public static String[] storage_permissions = {
             Manifest.permission.READ_EXTERNAL_STORAGE
-            // WRITE_EXTERNAL_STORAGE is often not needed just for reading/uploading
-            // If your RealPathUtil copies file, you might need it on older APIs
     };
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -260,7 +231,6 @@ public class ProfileImageUpload extends AppCompatActivity {
             // Add READ_MEDIA_VIDEO, READ_MEDIA_AUDIO if needed
     };
 
-    // Helper to get the correct permissions array
     public static String[] permissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             return storage_permissions_33;
@@ -269,7 +239,6 @@ public class ProfileImageUpload extends AppCompatActivity {
         }
     }
 
-    // Check if the required permission is granted
     private boolean isPermissionGranted() {
         String permissionToCheck;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -281,7 +250,6 @@ public class ProfileImageUpload extends AppCompatActivity {
     }
 
 
-    // Check permissions and open gallery if granted, otherwise request
     private void checkPermission() {
         // No runtime permissions needed for versions below M
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
@@ -328,10 +296,9 @@ public class ProfileImageUpload extends AppCompatActivity {
     // Handle Toolbar back button press
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        // Handle arrow click here
         if (item.getItemId() == android.R.id.home) {
             // onBackPressed(); // Standard back behavior
-            finish(); // Close this activity
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
