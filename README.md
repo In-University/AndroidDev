@@ -1,6 +1,7 @@
 ## Mobile Programming Assignment - Semester 2 (2024-2025)
-- **Week 2:** Personal Branding Interface Design  
-- **Week 3:** Review of RESTful API with Spring (CRUD, Swagger, Spring Security with JWT - [Completed](https://github.com/In-University/mail-service)) and GraphQL in the Week 3 folder of this repository.
+- **BT1 - Week 2:** Personal Branding Interface Design (16-01-2025)
+- **BT2? - Week 3:** Review of RESTful API with Spring (CRUD, Swagger, Spring Security with JWT - [Completed](https://github.com/In-University/mail-service)) and GraphQL in the Week 3 folder of this repository. (24-01-2025)
+- **BT3 - Week 4:** ImageView, Login, Register (20-02-2025)
 
 
 ## Bài tập nhóm: 
