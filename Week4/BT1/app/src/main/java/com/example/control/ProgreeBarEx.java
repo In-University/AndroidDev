@@ -17,7 +17,7 @@ public class ProgreeBarEx extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.switch_example);
+        setContentView(R.layout.progressbar_ex);
 
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
         img2 = findViewById(R.id.img2);

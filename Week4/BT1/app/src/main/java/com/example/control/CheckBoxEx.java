@@ -11,7 +11,7 @@ public class CheckBoxEx extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.switch_example);
+        setContentView(R.layout.checkbox_ex);
 
         bg = findViewById(R.id.rootLayout);
 
